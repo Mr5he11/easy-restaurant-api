@@ -63,7 +63,7 @@ mongoose.connect(process.env.MONGODB_URI!, {
       });
 
     // HTTP Server
-    const httpPort = process.env.HTTP_PORT || 5000;
+    const httpPort = process.env.PORT || 5000;
     const server = http.createServer(app).listen(httpPort, () => {
       console.log(`Connected on http://localhost:${httpPort}`)
     });
