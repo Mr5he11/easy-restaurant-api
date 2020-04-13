@@ -8,7 +8,7 @@
     "compile": "tsc",
     "serve": "node ./dist/index.js",
     "start:dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
-    "start": "npm run compile && npm run serve"
+    "start": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
