@@ -17,10 +17,8 @@ import { pushNotice } from '../helpers/notice';
  * @param processed: [Boolean] searchs for orders processed or not already processed (as specified by the param) 
  * @param populate: [Boolean] populate option (1 for true, 0 for false)
  * **return value**
- * @returns {
- * 	richInfo: array of { order: order info, tableNumber: number of the related table, waiter: waiter info },
- * 	orders: array of IOrder
- * }
+ * @returns { richInfo: array of { order: order info, tableNumber: number of the related table, waiter: waiter info },
+ * 						orders: array of IOrder }
  */
 export const get: Handler = (req, res, next) => {
 	let findBlock: any = {}
@@ -88,8 +86,8 @@ export const get: Handler = (req, res, next) => {
 */
 // TODO: this controller should be accessible only from waiters
 export const create: Handler = (req, res, next) => {
-	let tableNumber: number = req.params.tableNumber;
-	let covers: number = req.body.coversNumber;
+	let tableNumber: number = parseInt(req.params.tableNumber);
+	let covers: number = parseInt(req.body.coversNumber);
 	let order: IOrder = new Order({
 		items: req.body.order.items,
 		type: req.body.order.type
@@ -135,8 +133,8 @@ export const create: Handler = (req, res, next) => {
 // UPDATE: this controller should be now accesible only by cooks and cashdesks
 //         In order to add items or to update item quantity, waiter should be use "updateMany" controller
 export const update: Handler = (req, res, next) => {
-	const tableNumber: number = req.params.tableNumber;
-  const orderId: Schema.Types.ObjectId = req.params.orderId;
+	const tableNumber: number = parseInt(req.params.tableNumber);
+  const orderId: string = req.params.orderId;
 	const updatedInfo: any = req.body.updatedInfo ? JSON.parse(req.body.updatedInfo) : {};
   let updateBlock: any = {};
 
@@ -162,7 +160,7 @@ export const update: Handler = (req, res, next) => {
 				// all updates should be made only if last service is not already done
 				if (!table.services[lastServiceIndex].done) {
 					const activeServiceOrders = table.services[lastServiceIndex].orders;
-					const orderIndex = activeServiceOrders.findIndex((order: IOrder) => order._id ==  orderId);
+					const orderIndex = activeServiceOrders.findIndex((order: IOrder) => `${order._id}` ==  orderId);
 					// real update for all keys contained in updateBlock
 					Object.keys(updateBlock).forEach((key: string) => {
 						table.services[lastServiceIndex].orders[orderIndex][key] = updateBlock[key];

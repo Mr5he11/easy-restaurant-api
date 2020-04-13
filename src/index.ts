@@ -1,3 +1,4 @@
+let setup = require('dotenv').config();
 import express, { ErrorRequestHandler } from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
@@ -8,12 +9,9 @@ import User from './models/user'
 import SocketIoHelper from './helpers/socketio'
 let path = require('path');
 
-if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'production'){
-  let setup = require('dotenv').config();
-  if (setup.error) {
-    console.log("Unable to load \".env\" file. Please provide one to store the JWT secret key");
-    process.exit(-1);
-  }
+if ((!process.env.NODE_ENV || process.env.NODE_ENV !== 'production') && setup.error) {
+  console.log("Unable to load \".env\" file. Please provide one to store the JWT secret key");
+  process.exit(-1);
 }
 if (!process.env.JWT_SECRET) {
   console.log("Environment variables loaded but JWT_SECRET=<secret> key-value pair was not found");

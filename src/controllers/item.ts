@@ -5,11 +5,11 @@ import Table, { ITable } from '../models/table';
 import { IOrder } from '../models/order';
 
 export const get: Handler = (req, res, next) => {
-  let type: string = req.query.itemType ? req.query.itemType : undefined;
-  let name: string = req.query.itemName ? req.query.itemName : undefined;
+  let type: string | undefined = String(req.query.itemType) || undefined;
+  let name: string | undefined = String(req.query.itemName) || undefined;
   let subtype: string = req.body.itemSubtype ? req.body.itemSubtype : undefined;
   // this one is a flag that, if true, makes the controller return a single object instead of an array
-  let findOne: boolean = req.query.findOne || false;
+  let findOne: boolean = Boolean(req.query.findOne) || false;
   let query: Query<any> = Item.find({})
   if (type) {
     query = query.where('type').equals(type);
@@ -102,7 +102,7 @@ export const removeFromOrder: Handler = (req, res, next) => {
         const orderIndex = table.services[lastServiceIndex].orders.findIndex((order: IOrder) => `${order._id}` == orderId);
         const newItems = table.services[lastServiceIndex].orders[orderIndex].items.filter((item: any) => `${item.item}` != itemId);
         table.services[lastServiceIndex].orders[orderIndex].items = newItems;
-        table.save((err, table) => {
+        table.save((err, tableNumber) => {
           if (err) {
             let msg = `DB error: ${err}`;
 			      return next({ statusCode: 500, error: true, errormessage: msg });

@@ -8,7 +8,7 @@ import { Roles } from '../models/user';
 
 export const findOneForValidation: Handler = (req, res, next) => {
 	if ('tableNumber' in req.query) {
-		let n:number = req.query.tableNumber;
+		let n:number = parseInt(String(req.query.tableNumber));
 		Table.findOne({number: n})
 			.then(table => {
 				if (table) {
