@@ -102,7 +102,7 @@ export const removeFromOrder: Handler = (req, res, next) => {
         const orderIndex = table.services[lastServiceIndex].orders.findIndex((order: IOrder) => `${order._id}` == orderId);
         const newItems = table.services[lastServiceIndex].orders[orderIndex].items.filter((item: any) => `${item.item}` != itemId);
         table.services[lastServiceIndex].orders[orderIndex].items = newItems;
-        table.save((err, table: ITable) => {
+        table.save((err, table) => {
           if (err) {
             let msg = `DB error: ${err}`;
 			      return next({ statusCode: 500, error: true, errormessage: msg });
