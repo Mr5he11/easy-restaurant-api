@@ -63,8 +63,9 @@ mongoose.connect(process.env.MONGODB_URI!, {
       });
 
     // HTTP Server
-    const server = http.createServer(app).listen(process.env.HTTP_PORT, () => {
-      console.log(`Connected on http://localhost:${process.env.HTTP_PORT}`)
+    const httpPort = process.env.HTTP_PORT || 5000;
+    const server = http.createServer(app).listen(httpPort, () => {
+      console.log(`Connected on http://localhost:${httpPort}`)
     });
 
     SocketIoHelper.setSocketInstance(server);
